@@ -28,7 +28,7 @@
 
 11. <img width="2875" height="1835" alt="image" src="https://github.com/user-attachments/assets/b15e4013-f695-4fe7-8f63-24fabd3c0640" />
 
-12. T eiras donde dice
+12. Te iras donde dice
 
 13.( Tex) y escribiras el codigo
 
@@ -145,5 +145,53 @@ crear_poligono_2d("Poligono2D", lados=6, radio=5)
 Finalmente, se llama a la función para crear un hexágono regular con un radio de 5 unidades, el cual se genera automáticamente en la escena de Blender.
 ```
 
-YA TENIENDO TODO ESTO ESTA LISTO
+YA TENIENDO TODO ESTO ESTA LISTO LOS PASOS 
 
+Terminando los pasos deciados se tiene que ver asi
+
+<img width="2879" height="1834" alt="image" src="https://github.com/user-attachments/assets/b1dd0619-61cf-4631-8982-3253bbc60e87" />
+
+
+
+A continuacion te dejo el codigo completo
+
+
+```bash
+
+import bpy
+import math
+
+def crear_poligono_2d(nombre, lados, radio):
+    # Crear una nueva malla y un nuevo objeto
+    malla = bpy.data.meshes.new(nombre)
+    objeto = bpy.data.objects.new(nombre, malla)
+
+    # Vincular el objeto a la escena actual
+    bpy.context.collection.objects.link(objeto)
+
+    vertices = []
+    aristas = []
+
+    # Cálculo de vértices usando coordenadas polares a cartesianas
+    for i in range(lados):
+        angulo = 2 * math.pi * i / lados
+        x = radio * math.cos(angulo)
+        y = radio * math.sin(angulo)
+        vertices.append((x, y, 0))  # Z = 0 para mantenerlo en 2D
+
+    # Definir las conexiones (aristas) entre los vértices
+    for i in range(lados):
+        aristas.append((i, (i + 1) % lados))
+
+    # Cargar los datos en la malla
+    malla.from_pydata(vertices, aristas, [])
+    malla.update()
+
+# Limpiar la escena antes de empezar
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+
+# Llamada a la función: un hexágono de radio 5
+crear_poligono_2d("Poligono2D", lados=6, radio=5)
+
+```
